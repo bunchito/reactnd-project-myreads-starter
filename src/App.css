@@ -51,18 +51,17 @@ body, .app {
   text-align: center;
 }
 
-.open-search {
+.go-to {
   position: fixed;
   right: 25px;
   bottom: 25px;
 }
-.open-search a {
+.go-to a {
   display: block;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   background: #2e7d32;
-  background-image: url('./icons/search.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 28px;

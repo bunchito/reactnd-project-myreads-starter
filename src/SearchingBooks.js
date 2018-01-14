@@ -10,7 +10,6 @@ import noBookImage from './images/noimage.png'
 class SearchingBooks extends Component {
 
   static propTypes = {
-    onSelectChange: PropTypes.func,
     onShowDescription: PropTypes.func
   }
 
@@ -58,14 +57,25 @@ class SearchingBooks extends Component {
     }
   }
 
+  updateBookStateShelf = (selShelf, selBook) => {
+    this.setState({books: this.state.books.map(
+      (book)=> book.id === selBook.id ? Object.assign({}, book, {shelf: selShelf}) : book
+    )})
+  }
+
+  onChangeHandle(selShelf, selBook, selPage) {
+    this.updateBookStateShelf(selShelf, selBook)
+    this.props.onSelectChange(selShelf, selBook, selPage)
+
+  }
+
   updateSearchState = (search, caret) => {
     this.setState({ search })
-
     this.resultBooks(search,caret)
   }
 
   render() {
-    const { onSelectChange, onShowDescription } = this.props
+    const { onShowDescription } = this.props
     const { search, books } = this.state
 
     return (
@@ -105,7 +115,7 @@ class SearchingBooks extends Component {
                             style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks ? book.imageLinks.thumbnail : noBookImage})` }}
                             onClick={() => onShowDescription(book)}></div>
                           <div className="book-shelf-changer">
-                            <select onChange={(event) => onSelectChange(event.target.value, book, 'searchPage')} value={book.shelf}>
+                            <select onChange={(event) => this.onChangeHandle(event.target.value, book, 'searchPage')} value={book.shelf}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -145,6 +155,7 @@ class SearchingBooks extends Component {
                                 <div key={bookIds.identifier}> {bookIds.type}: {bookIds.identifier}</div>
                               ))}
                           </div>
+                          <div style={{fontWeight: 'bold'}}>Shelf: {book.shelf ? book.shelf : ''}</div>
                         </div>
                       </div>
                     </li>

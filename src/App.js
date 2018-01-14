@@ -6,6 +6,8 @@ import SearchingBooks from './SearchingBooks'
 import ModalWindow from './ModalWindow'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
+import iconHome from './icons/home.png'
+import iconSearch from './icons/search.png'
 
 class BooksApp extends Component {
 
@@ -25,6 +27,7 @@ class BooksApp extends Component {
   }
 
   changeShelf = (selectedShelf, selectObject, page) => {
+
     this.setState({books: this.state.books.map(
       (book)=> book.id === selectObject.id ? Object.assign({}, book, {shelf: selectedShelf}) : book
     )})
@@ -34,6 +37,7 @@ class BooksApp extends Component {
     if (page === 'searchPage') {
       this.grabAllBooks()
     }
+
   }
 
   showDescription = (bookDescription) => {
@@ -81,9 +85,16 @@ class BooksApp extends Component {
               onShowDescription={this.showDescription}
             />
           )}/>
-          <div className="open-search">
-            <Link to="/search">Search Books</Link>
-          </div>
+          <Route exact path='/' render={() => (
+            <div className="go-to">
+              <Link to="/search" style={{ backgroundImage: `url(${iconSearch})` }}>Search</Link>
+            </div>
+          )}/>
+          <Route exact path='/search' render={() => (
+            <div className="go-to">
+              <Link to="/" style={{ backgroundImage: `url(${iconHome})` }}>Go Home</Link>
+            </div>
+          )}/>
         </div>
 
         {modal !== ''  && (
